@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="视频地址： [IPTV +宽带单线融合效果演示，丢掉机顶盒，任意设备看iptv 浙江电信 Openwrt](https://www.bilibili.com/video/BV1PW4y1S7MK)
+
+# **前言**
+
+因为家里的弱电箱在卧室，通往各个房间的网线也都在弱电箱，所以主路由器基本只能放在弱电箱里，而电信的iptv跟宽带是两根线而且到客厅只有一根网线，为了保证电视/机顶盒有稳定的网速(千兆)，但这样就必须在iptv和宽带之间二选一，除非装修前提前多埋线，相信大部分人都会存在这个纠结。">
+<meta property="og:title" content="单线融合宽带iptv，不需vlan、丢掉光猫，任意设备看iptv【浙江电信】【Openwrt】">
+<meta property="og:description" content="视频地址： [IPTV +宽带单线融合效果演示，丢掉机顶盒，任意设备看iptv 浙江电信 Openwrt](https://www.bilibili.com/video/BV1PW4y1S7MK)
+
+# **前言**
+
+因为家里的弱电箱在卧室，通往各个房间的网线也都在弱电箱，所以主路由器基本只能放在弱电箱里，而电信的iptv跟宽带是两根线而且到客厅只有一根网线，为了保证电视/机顶盒有稳定的网速(千兆)，但这样就必须在iptv和宽带之间二选一，除非装修前提前多埋线，相信大部分人都会存在这个纠结。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://qbenny.github.io/post/dan-xian-rong-he-kuan-dai-iptv%EF%BC%8C-bu-xu-vlan%E3%80%81-diu-diao-guang-mao-%EF%BC%8C-ren-yi-she-bei-kan-iptv%E3%80%90-zhe-jiang-dian-xin-%E3%80%91%E3%80%90Openwrt%E3%80%91.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
+<title>单线融合宽带iptv，不需vlan、丢掉光猫，任意设备看iptv【浙江电信】【Openwrt】</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">单线融合宽带iptv，不需vlan、丢掉光猫，任意设备看iptv【浙江电信】【Openwrt】</h1>
+<div class="title-right">
+    <a href="https://qbenny.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/qbenny/qbenny.github.io/issues/5" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><p>视频地址： <a href="https://www.bilibili.com/video/BV1PW4y1S7MK" rel="nofollow">IPTV +宽带单线融合效果演示，丢掉机顶盒，任意设备看iptv 浙江电信 Openwrt</a></p>
+<h1><strong>前言</strong></h1>
+<p>因为家里的弱电箱在卧室，通往各个房间的网线也都在弱电箱，所以主路由器基本只能放在弱电箱里，而电信的iptv跟宽带是两根线而且到客厅只有一根网线，为了保证电视/机顶盒有稳定的网速(千兆)，但这样就必须在iptv和宽带之间二选一，除非装修前提前多埋线，相信大部分人都会存在这个纠结。我的折腾之路也由此开始～</p>
+<p>效果先演示下:</p>
+<p><a href="https://www.bilibili.com/video/BV1PW4y1S7MK" rel="nofollow">02:25IPTV +宽带单线融合效果演示，丢掉机顶盒，任意设备看iptv 浙江电信 Openwrt 1.1万  83视频_小愚_</a></p>
+<p>在看别人改造方案的时候，了解大致有几种选择：</p>
+<p>1.分线器方案，只需要买一对分线器，将一根八芯的千兆线改成2跟4芯的百兆网线就行了。该方案成本极低，淘宝20块钱就能搞定，但缺点是无法享受原来的千兆网络，连到客厅的宽带只有百兆。</p>
+<p><a href="https://i0.hdslb.com/bfs/article/6289297265813e26170cd8914649587c1cef65bb.png@1256w_694h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/6289297265813e26170cd8914649587c1cef65bb.png@1256w_694h_!web-article-pic.avif</a></p>
+<p>2.光猫 宽带+iptv 两根线(光猫支持融合一根线的话就是一根，不支持的话只能两根)到主路由器里划分vlan，然后在需要机顶盒的房间部署一个支持vlan的交换机，把宽带和iptv信号拆分出来，便可正常使用iptv和 千兆网络。该方案优势是复用网络，千兆宽带基本不受影响。缺点是每个想看iptv的位置都要准备一个支持vlan的交换机，看电视依然需要机顶盒</p>
+<p>3.宽带+iptv融合进宽带网络，网关处配置udp代理，局域网内通过http请求访问代理获得视频流，可以在任意支持该协议的软件中播放iptv。缺点是需要网关支持udp代理，iptv播放信息需要通过抓包获取，比较麻烦。</p>
+<p>4.宽带+iptv融合进宽带网络，网关处配置igmp代理，局域网内通过igmp组播信号的方式获得视频流，可以在任意支持该协议的软件中播放iptv。缺点是需要网关支持igmp代理，iptv播放信息需要通过抓包获取，比较麻烦。</p>
+<p>起初的问题是如何解决一根线满足iptv和宽带问题，但后来发现甚至可以完全不需要机顶盒，iptv播放直接统一到一个电视盒子或电视自带系统里，那我当然选择可以直接放弃机顶盒的方案啦～</p>
+<p>选择的实现方案是方案3，方案4在实操的过程中容易出现广播风暴造成网络异常（从别人方案的反馈来看），方案3就是一个纯http转udp协议的代理，逻辑清晰没有太多的风险点当然选它啦。<strong>额外需要：一个Openwrt的路由器（支持抓包、dhcp option60鉴权、udpproxy功能的其他路由器亦可）。</strong></p>
+<p>上个最终效果图</p>
+<p><a href="https://i0.hdslb.com/bfs/article/watermark/aade72db7d8112f7479ecde696d5e5676601a55f.jpg@1256w_942h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/watermark/aade72db7d8112f7479ecde696d5e5676601a55f.jpg@1256w_942h_!web-article-pic.avif</a></p>
+<h1><strong>方案实现—抓包</strong></h1>
+<p>登陆光猫管理员账号，查看iptv和宽带是否可以融合在绑定在同一网口，刚开始调研vlan方案时觉得很遗憾，我的光猫只有两个口且不能把光猫和iptv绑定在一个口里。但后来发现这样走方案3、方案4时反而很简单。</p>
+<p>首先我已知电信iptv的连接方式是dhcp鉴权，有些其他地方不需要鉴权或者直接使用ppoe拨号的方式，虽然我的方案是针对dhcp鉴权但他们的实现原理类似。如果iptv提供方可以直接提供拨号或者登陆iptv的账号密码那我们就可以直接在路由器上配置对应的连接方式。但这里运营商应该不会把信息给出，所以需要我们自己通过抓包的方式了解授权的实现方式。</p>
+<p>因为我使用的是openwrt，登陆路由器之后可以使用tcpdump命令直接抓取对应端口的数据包，所以不需要单独给路由器划分vlan或者配置端口镜像等复杂的操作，直接把光猫出的iptv线和机顶盒的网线连到两个lan口（路由器默认的wan不接线，当交换机使用）这个时候相当于iptv机顶盒直接和光猫iptv口连接。这里只需要我们记住机顶盒连接的是哪个网口。这里我以连到下图的eth2举例。(电脑实际连的eth3，忘了画出来)</p>
+<p><a href="https://i0.hdslb.com/bfs/article/watermark/cad2fbdf0a06ca395c9744df45e7c53b98bdd9e3.jpg@1256w_942h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/watermark/cad2fbdf0a06ca395c9744df45e7c53b98bdd9e3.jpg@1256w_942h_!web-article-pic.avif</a></p>
+<p>线路连接好以后，可以先确一下机顶盒是否可以正常登录看电视，如果登陆没问题，则先断电备用。</p>
+<ol>
+<li>
+<p>电脑通过ssh登陆openwrt路由器(电脑实际连的eth3，图里忘了画出来)</p>
+<p>执行命令开始抓包: tcpdump -i eth2 -w dhcp.pcap</p>
+</li>
+<li>
+<p>给机顶盒上电启动，让机顶盒完成登陆进入主界面</p>
+</li>
+<li>
+<p>机顶盒登陆成功后，切到电脑ssh，执行ctrl+c，停止抓包，数据包会被保存在dhcp.pcap文件中</p>
+</li>
+<li>
+<p>抓包完成把数据包拷贝到电脑里备用。</p>
+</li>
+<li>
+<p>在电脑里用wireshark软件打开数据包，搜索protocol=dhcp的请求，可以看到两条路iptv机顶盒发出的请求，点开DHCP request请求，下方包的详细信息里dhcp协议中有</p>
+<p>option 61（客户端mac地址）展开后，在Client Mac Address点右键复制值，保存备用</p>
+<p>option 12（HostName）展开后，在Host Name点右键复制值，保存备用</p>
+<p>option 60  (Vendor class)展开后，在Vendor class identifier这行上，鼠标右键选择复制----as a Hex Stream 保存备用</p>
+</li>
+</ol>
+<p><a href="https://i0.hdslb.com/bfs/article/9a93f46564db58296f55bb6602fc3af04e8358b7.png@1256w_980h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/9a93f46564db58296f55bb6602fc3af04e8358b7.png@1256w_980h_!web-article-pic.avif</a></p>
+<p>网络鉴权信息抓取完毕，同时在抓包数据里搜索http协议，电信的http协议中会明显的看到一些初始化鉴权和获得播放列表的请求，比如下面这个请求，看名字就知道获取频道列表～</p>
+<p>http://***/EPG/jsp/getchannellistHWCTC.jsp</p>
+<p>打开response返回数据一看，好家伙～！保存备用</p>
+<h1><strong>方案实现—网络配置</strong></h1>
+<p>至此抓包获取信息工作完成，把网络接线恢复到最终状态</p>
+<p><a href="https://i0.hdslb.com/bfs/article/watermark/aade72db7d8112f7479ecde696d5e5676601a55f.jpg@1256w_942h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/watermark/aade72db7d8112f7479ecde696d5e5676601a55f.jpg@1256w_942h_!web-article-pic.avif</a></p>
+<p>回到Openwrt配置里选择新建接口，协议选择DHCP客户端，接口选择连接光猫的接口名。我这里以eth2为例，后选择保存</p>
+<p>在基础配置里，添加请求DHCP时发送的主机名（上面抓包数据中的HostName）</p>
+<p><a href="https://i0.hdslb.com/bfs/article/watermark/57cb378201afbcf69273504759aa368e0071739b.jpg@1256w_298h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/watermark/57cb378201afbcf69273504759aa368e0071739b.jpg@1256w_298h_!web-article-pic.avif</a></p>
+<p>在高级配置里，使用网关跃点填入一个比较大的数字，我这里写20</p>
+<p>重设MAC地址这里，填写上面抓包数据的客户端mac地址</p>
+<p><a href="https://i0.hdslb.com/bfs/article/watermark/066bbb0b80ff44a510a8a79606c7cdbb3da01232.jpg@1256w_1014h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/watermark/066bbb0b80ff44a510a8a79606c7cdbb3da01232.jpg@1256w_1014h_!web-article-pic.avif</a></p>
+<p>保存并应用设置后，再进入你的 WAN 接口设置，将它的 网络跃点设置为 1（比前面配的20小即可），<strong>否则你会无法正常使用互联网</strong>。</p>
+<p>最后再ssh登陆到Openwrt路由器上，修改/etc/config/network中的IPTV参数</p>
+<p>找到配置文件中iptv接口的dhcp配置（搜dhcp即可）在配置中新增一行：</p>
+<p>option sendopts '0x3c:****'</p>
+<ul>
+<li>***的内容为上面抓包中获得的Vendor class identifier(一长串字符串)，保存退出后回到openwrt，重连iptv接口，稍等一会如果看到有被分配了私网ip地址就说明配置成功了!</li>
+</ul>
+<h1></h1>
+<h1><strong>方案实现—udpxy配置</strong></h1>
+<p>可以选择登陆到Openwrt路由器上命令行安装，安装命令:</p>
+<p>opkg install udpxy luci-app-udpxy</p>
+<p>或者直接在管理网页安装udpxy、luci-app-udpxy</p>
+<p>安装好后进入udpxy管理页面配置:</p>
+<p>Bind IP/Interface，可以直接配置本地lan的地址或者lan的接口名(br-lan)</p>
+<p>端口只要不被占用即可，随意写</p>
+<p>Source IP/Interface，填写电信iptv连接openwrt的接口，我这里是et2</p>
+<p>最大连接数是你允许同时对多少个客户端进行代理（同时几个设备看iptv电视）</p>
+<p><a href="https://i0.hdslb.com/bfs/article/5a5e184f6c0ff56a27c5d7c32ee26bebba8cc05d.png@1256w_1580h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/5a5e184f6c0ff56a27c5d7c32ee26bebba8cc05d.png@1256w_1580h_!web-article-pic.avif</a></p>
+<h1><strong>测试效果</strong></h1>
+<p>检查udpxy状态，本地访问:</p>
+<p>http://[br-lan的ip]:[绑定端口]/status</p>
+<p>我以路由器地址为192.168.1.1 绑定端口为9999为例</p>
+<p><a href="http://192.168.1.1:9999/status" rel="nofollow">http://192.168.1.1:9999/status</a></p>
+<p>网页会显示udpxy当前的连接状态，如果有显示状态说明正常(我截图的时候有人正在看电视，所以会显示active client为1，且有具体内容)</p>
+<p><a href="https://i0.hdslb.com/bfs/article/19418f9a523ce15e9be0e0f0d345aa61967ccb83.png@1256w_810h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/19418f9a523ce15e9be0e0f0d345aa61967ccb83.png@1256w_810h_!web-article-pic.avif</a></p>
+<p>接下来我们翻出前面保存的抓包文件，找到这条请求的返回数据(我这个数据我这里只针对杭州电信):http://***/EPG/jsp/getchannellistHWCTC.jsp</p>
+<p>这个请求抓到的数据包可以明确的看到电台列表，这里只举一个例子,搜索igmp可以看到这样的数据:</p>
+<p>ChannelURL="igmp://233.50.201.118:5140|rtsp://115.233.41.137/PLTV/88888913/224/3221228078/10000100000000060000000002460690_0.smil******"</p>
+<p>这里的igmp就是电视台的组播地址，我们通过这个ip端口号就能看iptv</p>
+<p>这里需要调整下url的格式</p>
+<p>A.抓包里的  igmp://233.50.201.118:5140</p>
+<p>B.你路由器的udpxy访问路径为  <a href="http://192.168.1.1:9999/status" rel="nofollow">http://192.168.1.1:9999/status</a></p>
+<p>(以路由器地址为192.168.1.1 绑定端口为9999为例)</p>
+<p>A+B组合后即为软件播放iptv使用的地址:</p>
+<p><a href="http://192.168.1.1:9999/udp/233.50.201.118:5140" rel="nofollow">http://192.168.1.1:9999/udp/233.50.201.118:5140</a></p>
+<p><a href="http://address:port/udp/mcast_addr:mport/" rel="nofollow">http://address:port/udp/mcast_addr:mport/</a></p>
+<p>在电脑使用VLC软件、添加链接即可进行播放。来跟我一起丢掉机顶盒吧~</p>
+<p><a href="https://i0.hdslb.com/bfs/article/a7cfbc1a423e5f70e19ec183a01bae0a0d4150aa.png@1256w_866h_!web-article-pic.avif" rel="nofollow">https://i0.hdslb.com/bfs/article/a7cfbc1a423e5f70e19ec183a01bae0a0d4150aa.png@1256w_866h_!web-article-pic.avif</a></p>
+<p><strong>关于频道、台标、和电视节目单的配置问题，后续还计划再出一篇专栏讲一下，感兴趣的观众老爷可以点个关注收藏支持一下，谢谢大家！</strong></p>
+<p>用了两天发现一个问题，udpxy在iptv接口重连以后，ip不会自动更着刷新，导致播放失败。</p>
+<p>需要在hotplug创建一个脚本让udpxy跟着重新启动可以解决。</p>
+<p>输入以下命令创建脚本</p>
+<p>vi /etc/hotplug.d/iface/99-iptv.sh</p>
+<p>贴入脚本内容</p>
+<div class="highlight highlight-source-js"><pre class="notranslate">#!/bin/sh
+<span class="pl-kos">[</span> <span class="pl-s">"$ACTION"</span> <span class="pl-c1">=</span> <span class="pl-s1">ifup</span> <span class="pl-kos">]</span> <span class="pl-c1">&amp;&amp;</span> <span class="pl-kos">[</span> <span class="pl-s">"$INTERFACE"</span> <span class="pl-c1">=</span> <span class="pl-c1">IPTV</span> <span class="pl-kos">]</span> <span class="pl-c1">&amp;&amp;</span>
+<span class="pl-pds"><span class="pl-c1">/</span>etc<span class="pl-c1">/</span>init</span><span class="pl-kos">.</span><span class="pl-c1">d</span><span class="pl-c1">/</span><span class="pl-s1">udpxy</span> <span class="pl-s1">restart</span></pre></div>
+<p>保存退出后为脚本文件添加可执行权限：</p>
+<p>chmod +x /etc/hotplug.d/iface/99-iptv.sh</p></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://qbenny.github.io"> Benny's Blog </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if(""!=""){
+    var now=new Date();
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","qbenny/qbenny.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+</html>
