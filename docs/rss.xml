@@ -1,2 +1,36 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Benny's Blog</title><link>https://qbenny.github.io</link><description>备忘录</description><copyright>Benny's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://qbenny.github.io</link></image><lastBuildDate>Thu, 20 Jun 2024 03:31:12 +0000</lastBuildDate><managingEditor>Benny's Blog</managingEditor><ttl>60</ttl><webMaster>Benny's Blog</webMaster><item><title>Another Blog</title><link>https://qbenny.github.io/post/Another%20Blog.html</link><description>Hello again。</description><guid isPermaLink="true">https://qbenny.github.io/post/Another%20Blog.html</guid><pubDate>Thu, 20 Jun 2024 03:23:23 +0000</pubDate></item></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Benny's Blog</title><link>https://qbenny.github.io</link><description>备忘录</description><copyright>Benny's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://qbenny.github.io</link></image><lastBuildDate>Thu, 20 Jun 2024 03:48:42 +0000</lastBuildDate><managingEditor>Benny's Blog</managingEditor><ttl>60</ttl><webMaster>Benny's Blog</webMaster><item><title>Windows&amp;Office VLK安装激活步骤</title><link>https://qbenny.github.io/post/Windows%26Office%20VLK-an-zhuang-ji-huo-bu-zou.html</link><description># Office官网VLK安装&#13;
+&#13;
+**1.office 软件部署工具：https://www.microsoft.com/en-us/download/details.aspx?id=49117**&#13;
+&#13;
+**2.office 版本自定义工具：https://config.office.com/deploymentsettings**&#13;
+&#13;
+**3.基于KMS的 GVLK：https://learn.microsoft.com/zh-cn/deployoffice/vlactivation/gvlks**&#13;
+&#13;
+**4.通过官方下载安装批量授权版：**&#13;
+&#13;
+**下载命令：**&#13;
+&#13;
+setup /download config.xml&#13;
+&#13;
+**安装命令:**&#13;
+&#13;
+setup /configure config.xml&#13;
+&#13;
+**office 激活命令: (CMD以管理员运行)**&#13;
+&#13;
+cscript ospp.vbs /sethst:kms.03k.org&#13;
+&#13;
+cscript ospp.vbs /act&#13;
+&#13;
+# win10/11 专业版激活&#13;
+&#13;
+https://www.microsoft.com/zh-cn/software-download/windows11&#13;
+&#13;
+https://learn.microsoft.com/zh-cn/windows-server/get-started/kms-client-activation-keys&#13;
+&#13;
+slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX&#13;
+&#13;
+slmgr /skms [kms.03k.org](http://kms.03k.org/)&#13;
+&#13;
+slmgr /ato。</description><guid isPermaLink="true">https://qbenny.github.io/post/Windows%26Office%20VLK-an-zhuang-ji-huo-bu-zou.html</guid><pubDate>Thu, 20 Jun 2024 03:48:16 +0000</pubDate></item><item><title>Another Blog</title><link>https://qbenny.github.io/post/Another%20Blog.html</link><description>Hello again。</description><guid isPermaLink="true">https://qbenny.github.io/post/Another%20Blog.html</guid><pubDate>Thu, 20 Jun 2024 03:23:23 +0000</pubDate></item></channel></rss>
