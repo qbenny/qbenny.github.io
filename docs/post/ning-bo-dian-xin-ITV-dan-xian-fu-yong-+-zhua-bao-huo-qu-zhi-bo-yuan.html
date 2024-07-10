@@ -90,7 +90,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <li>3_OTHER_B_VID_43</li>
 </ul>
 <p>从名称和查看到的对应设置可以发现， Internet 上网对应的VLAN ID 为 41，ITV为43。然后点击VLAN绑定，将千兆口的ID41绑定到 2_INTERNET_B_VID_41，将千兆口的43绑定到 3_OTHER_B_VID_43。设置完成后的效果如下表所示：</p>
-<table role="table">
+<markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
 <th>用户侧端口</th>
@@ -110,7 +110,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <td>43</td>
 </tr>
 </tbody>
-</table>
+</table></markdown-accessiblity-table>
 <p>在实际使用中，发现这边用41拨号的话，就会不定时的断开连接重新拨号，但不指定VLAN ID 使用起来就一切正常，所以目前没有用到41，如果哪位大佬知道原因请告知。至此，光猫的设置全部完成！</p>
 <h3>获取ITV认证信息</h3>
 <p>配置完光猫以后，就可以正式开始折腾盒子了。首先获取ITV盒子的连接信息。还是因为网口的问题，这一次就先从光猫的ITV另外接了一根线到交换机，这样，机顶盒只要随意插在路由器的lan口，就可以连接ITV网络了。如果本来就是另接线从ITV口到路由器的话，就去路由器的接口里创建一个新接口，选择桥接，将ITV所在的口和机顶盒使用的口桥接起来，协议选择不配置。完成后，使用路由器的 tcpdump 插件进行抓包，捕获盒子所在 lan 口的流量，开始捕获，让机顶盒联通网络和电源，进行联网。稍等一会儿就联网成功了，此时停止捕获，将生成的.pcap文件下载回来，使用 <a href="https://www.wireshark.org/index.html#download" rel="nofollow">Wireshark</a> 读取这个文件进行分析。</p>
