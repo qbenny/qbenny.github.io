@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Benny's Blog</title><link>https://qbenny.github.io</link><description>备忘录</description><copyright>Benny's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://qbenny.github.io</link></image><lastBuildDate>Wed, 10 Jul 2024 08:01:07 +0000</lastBuildDate><managingEditor>Benny's Blog</managingEditor><ttl>60</ttl><webMaster>Benny's Blog</webMaster><item><title>饮食热量计算</title><link>https://qbenny.github.io/post/yin-shi-re-liang-ji-suan.html</link><description>### 每天总热量计算&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Benny's Blog</title><link>https://qbenny.github.io</link><description>备忘录</description><copyright>Benny's Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://qbenny.github.io</link></image><lastBuildDate>Mon, 18 Nov 2024 04:20:47 +0000</lastBuildDate><managingEditor>Benny's Blog</managingEditor><ttl>60</ttl><webMaster>Benny's Blog</webMaster><item><title>Creo改公制</title><link>https://qbenny.github.io/post/Creo-gai-gong-zhi.html</link><description>管理员身份运行cmd&#13;
+c:&#13;
+cd C:\Program Files\PTC\Creo 11.0.1.0\Common Files\creo_standards&#13;
+configure&#13;
+选5。</description><guid isPermaLink="true">https://qbenny.github.io/post/Creo-gai-gong-zhi.html</guid><pubDate>Mon, 18 Nov 2024 04:16:07 +0000</pubDate></item><item><title>饮食热量计算</title><link>https://qbenny.github.io/post/yin-shi-re-liang-ji-suan.html</link><description>### 每天总热量计算&#13;
 &#13;
 总热量计算器：[www.calculator.net/bmr-calculator.html](url)&#13;
 &#13;
